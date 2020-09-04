@@ -1,7 +1,7 @@
 <mat-tab-group>
-  <mat-tab label="Accounts"> Content 1 </mat-tab>
-  <mat-tab label="Cards"> Content 2 </mat-tab>
-  <mat-tab label="Loans"> Content 3 </mat-tab>
+  <mat-tab *ngFor="let wSpace of wSpaceList | async" label="{{ wSpace.NAME }} ">
+    {{ wSpace.ID }}</mat-tab
+  >
 </mat-tab-group>
 
 <div class="add-form-container" *ngIf="item | async as userProfile">

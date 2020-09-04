@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
+import {
+  AngularFirestoreDocument,
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { UserProfile } from '../core/user-profile.model';
+import { UserProfile, Workspace } from '../core/user-profile.model';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../core/auth.service';
@@ -25,6 +29,8 @@ export class ProfileComponent implements OnInit {
   downloadURL: Observable<string>;
   uploadProgress: Observable<number>;
 
+  public wsCollection: AngularFirestoreCollection<Workspace>;
+  wSpaceList: Observable<Workspace[]>;
   constructor(
     public afAuth: AngularFireAuth,
     public afs: AngularFirestore,
@@ -40,6 +46,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.itemDoc = this.afs.doc<UserProfile>(`users/${this.uid}`);
     this.item = this.itemDoc.valueChanges();
+    this.wsCollection = this.afs.collection<Workspace>('WORKSPACE_DEFINITION');
+    this.wSpaceList = this.wsCollection.valueChanges();
   }
 
   async onSubmit(ngForm: NgForm) {
@@ -55,6 +63,7 @@ export class ProfileComponent implements OnInit {
       ip,
       phone,
       specialty,
+      ACC_NO,
     } = ngForm.form.getRawValue();
 
     const userProfile: UserProfile = {
