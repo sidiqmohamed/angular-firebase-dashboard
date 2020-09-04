@@ -12,7 +12,7 @@ import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
   private itemDoc: AngularFirestoreDocument<UserProfile>;
@@ -26,17 +26,15 @@ export class ProfileComponent implements OnInit {
   uploadProgress: Observable<number>;
 
   constructor(
-    public afAuth: AngularFireAuth, 
-    public afs: AngularFirestore, 
+    public afAuth: AngularFireAuth,
+    public afs: AngularFirestore,
     private route: ActivatedRoute,
     private auth: AuthService,
     private afStorage: AngularFireStorage
   ) {
     this.uid = this.route.snapshot.paramMap.get('id');
 
-    this.downloadURL = this.afStorage
-      .ref(`users/${this.uid}/profile-image`)
-      .getDownloadURL();
+    this.downloadURL = this.afStorage.ref(`users/${this.uid}/profile-image`).getDownloadURL();
   }
 
   ngOnInit() {
@@ -47,7 +45,7 @@ export class ProfileComponent implements OnInit {
   async onSubmit(ngForm: NgForm) {
     this.loading = true;
 
-    const { 
+    const {
       email,
       name,
       address,
@@ -56,7 +54,7 @@ export class ProfileComponent implements OnInit {
       zip,
       ip,
       phone,
-      specialty
+      specialty,
     } = ngForm.form.getRawValue();
 
     const userProfile: UserProfile = {
@@ -69,12 +67,12 @@ export class ProfileComponent implements OnInit {
       zip,
       ip,
       phone,
-      specialty
+      specialty,
     };
 
     try {
       await this.auth.updateUserDocument(userProfile);
-    } catch(error) {
+    } catch (error) {
       console.log(error.message);
       this.error = error.message;
     }
@@ -95,7 +93,7 @@ export class ProfileComponent implements OnInit {
 
     // upload and store the task
     const task = this.afStorage.upload(filePath, file);
-    task.catch(error => this.error = error.message);
+    task.catch((error) => (this.error = error.message));
 
     // observer percentage changes
     this.uploadProgress = task.percentageChanges();
@@ -110,5 +108,4 @@ export class ProfileComponent implements OnInit {
       )
       .subscribe();
   }
-
 }

@@ -5,11 +5,14 @@ import { UserProfile } from '../core/user-profile.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  constructor(private router: Router, private afAuth: AngularFireAuth, private afs: AngularFirestore) { }
+  constructor(
+    private router: Router,
+    private afAuth: AngularFireAuth,
+    private afs: AngularFirestore
+  ) {}
 
   logout() {
     this.afAuth.auth.signOut();
@@ -35,7 +38,7 @@ export class AuthService {
       zip: '',
       phone: '',
       specialty: '',
-      ip: ''
+      ip: '',
     };
 
     // write to Cloud Firestore
