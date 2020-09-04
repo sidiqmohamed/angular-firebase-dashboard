@@ -1,0 +1,12 @@
+<header id="particles">
+  <a [routerLink]="['/users']"><h2>Angular Firebase Grid</h2></a>
+  <button *ngIf="auth.isLoggedIn()" class="ui secondary button logout" (click)="logout()">
+    Logout
+  </button>
+</header>
+
+<div class="app">
+  <div class="ui grid container">
+    <router-outlet></router-outlet>
+  </div>
+</div>
