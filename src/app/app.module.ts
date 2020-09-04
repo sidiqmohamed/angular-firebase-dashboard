@@ -13,14 +13,12 @@ import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { UsersComponent } from './users/users.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-@NgModule({ 
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    ProfileComponent,
-    UsersComponent
-  ],
+import { MatTabsModule } from '@angular/material/tabs';
+
+@NgModule({
+  declarations: [AppComponent, LoginComponent, ProfileComponent, UsersComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,9 +26,11 @@ import { UsersComponent } from './users/users.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    BrowserAnimationsModule,
+    MatTabsModule,
   ],
   providers: [AngularFireAuthGuard],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

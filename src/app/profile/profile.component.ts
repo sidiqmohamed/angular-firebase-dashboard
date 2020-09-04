@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
+import {
+  AngularFirestoreDocument,
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { UserProfile } from '../core/user-profile.model';
+import { UserProfile, Workspace } from '../core/user-profile.model';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../core/auth.service';
@@ -12,7 +16,7 @@ import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
   private itemDoc: AngularFirestoreDocument<UserProfile>;
@@ -25,29 +29,31 @@ export class ProfileComponent implements OnInit {
   downloadURL: Observable<string>;
   uploadProgress: Observable<number>;
 
+  public wsCollection: AngularFirestoreCollection<Workspace>;
+  wSpaceList: Observable<Workspace[]>;
   constructor(
-    public afAuth: AngularFireAuth, 
-    public afs: AngularFirestore, 
+    public afAuth: AngularFireAuth,
+    public afs: AngularFirestore,
     private route: ActivatedRoute,
     private auth: AuthService,
     private afStorage: AngularFireStorage
   ) {
     this.uid = this.route.snapshot.paramMap.get('id');
 
-    this.downloadURL = this.afStorage
-      .ref(`users/${this.uid}/profile-image`)
-      .getDownloadURL();
+    this.downloadURL = this.afStorage.ref(`users/${this.uid}/profile-image`).getDownloadURL();
   }
 
   ngOnInit() {
     this.itemDoc = this.afs.doc<UserProfile>(`users/${this.uid}`);
     this.item = this.itemDoc.valueChanges();
+    this.wsCollection = this.afs.collection<Workspace>('WORKSPACE_DEFINITION');
+    this.wSpaceList = this.wsCollection.valueChanges();
   }
 
   async onSubmit(ngForm: NgForm) {
     this.loading = true;
 
-    const { 
+    const {
       email,
       name,
       address,
@@ -56,7 +62,8 @@ export class ProfileComponent implements OnInit {
       zip,
       ip,
       phone,
-      specialty
+      specialty,
+      ACC_NO,
     } = ngForm.form.getRawValue();
 
     const userProfile: UserProfile = {
@@ -69,12 +76,12 @@ export class ProfileComponent implements OnInit {
       zip,
       ip,
       phone,
-      specialty
+      specialty,
     };
 
     try {
       await this.auth.updateUserDocument(userProfile);
-    } catch(error) {
+    } catch (error) {
       console.log(error.message);
       this.error = error.message;
     }
@@ -95,7 +102,7 @@ export class ProfileComponent implements OnInit {
 
     // upload and store the task
     const task = this.afStorage.upload(filePath, file);
-    task.catch(error => this.error = error.message);
+    task.catch((error) => (this.error = error.message));
 
     // observer percentage changes
     this.uploadProgress = task.percentageChanges();
@@ -110,5 +117,4 @@ export class ProfileComponent implements OnInit {
       )
       .subscribe();
   }
-
 }

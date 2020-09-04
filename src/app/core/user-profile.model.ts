@@ -10,3 +10,7 @@ export interface UserProfile {
   specialty: string;
   ip: string;
 }
+export interface Workspace {
+  ID: string;
+  NAME: string;
+}
