@@ -10,7 +10,6 @@ import {
 import { AngularFireAuth } from '@angular/fire/auth';
 import { map } from 'rxjs/operators';
 import { UsersComponent } from './users/users.component';
-
 import { pipe } from 'rxjs';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['']);
