@@ -4,6 +4,9 @@ service cloud.firestore {
     match /users/{userId} {
       allow read: if request.auth.uid == userId || request.auth.token.admin == true;
       allow write: if request.auth.uid == userId || request.auth.token.admin == true;
+    }match /WORKSPACE_DEFINITION/{userId} {
+      allow read;
+      allow write;
     }
-  }
+    }
 }
