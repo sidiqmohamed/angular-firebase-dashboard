@@ -15,6 +15,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { UsersComponent } from './users/users.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatTabsModule } from '@angular/material/tabs';
+
 @NgModule({
   declarations: [AppComponent, LoginComponent, ProfileComponent, UsersComponent],
   imports: [
@@ -26,6 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AngularFirestoreModule,
     AngularFireStorageModule,
     BrowserAnimationsModule,
+    MatTabsModule,
   ],
   providers: [AngularFireAuthGuard],
   bootstrap: [AppComponent],
