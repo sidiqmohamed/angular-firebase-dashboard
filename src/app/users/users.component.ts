@@ -11,11 +11,14 @@ import { Observable } from 'rxjs';
 export class UsersComponent implements OnInit {
   private usersCollection: AngularFirestoreCollection<UserProfile>;
   users: Observable<UserProfile[]>;
+  value: any;
 
   constructor(private afs: AngularFirestore) {
     this.usersCollection = afs.collection<UserProfile>('users');
     this.users = this.usersCollection.valueChanges();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.value = this.afs.collection('canvas').doc('workspace').collection('ACCOUNTS').get();
+  }
 }
